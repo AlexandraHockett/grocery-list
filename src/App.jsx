@@ -2,11 +2,48 @@ import "./App.css";
 import groceryCartImg from "./assets/grocery-cart.png";
 import { useState } from "react";
 
+/**{
+ * name:"Banana",
+ * quantity: 1,
+ * completed: true
+}*/
+
 function App() {
   const [inputValue, setInputValue] = useState("");
+  const [groceryItems, setGroceryItems] = useState([]);
 
   const handleChangeInputValue = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const handdleAddGroceryItem = (e) => {
+    if (e.key === "Enter") {
+      if (inputValue) {
+        setGroceryItems([
+          ...groceryItems,
+          {
+            quantity: 1,
+            name: inputValue,
+            completed: false,
+          },
+        ]);
+        setInputValue("");
+      }
+    }
+  };
+
+  const renderGroceryList = () => {
+    return groceryItems.map((item) => (
+      <li key={item.name}>
+        <div className="container">
+          <input type="checkbox" />
+          <p>{item.name}</p>
+        </div>
+        <div>
+          <button className="remove-button">X</button>
+        </div>
+      </li>
+    ));
   };
 
   return (
@@ -22,21 +59,12 @@ function App() {
               placeholder="Add an Item"
               className="item-input"
               onChange={handleChangeInputValue}
+              onKeyDown={handdleAddGroceryItem}
               value={inputValue}
             />
           </div>
         </div>
-        <ul>
-          <li>
-            <div className="container">
-              <input type="checkbox" />
-              <p>Carrots</p>
-            </div>
-            <div>
-              <button className="remove-button">X</button>
-            </div>
-          </li>
-        </ul>
+        <ul>{renderGroceryList()}</ul>
       </div>
     </main>
   );
