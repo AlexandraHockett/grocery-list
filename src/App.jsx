@@ -11,7 +11,6 @@ import { useState } from "react";
 function App() {
   const [inputValue, setInputValue] = useState("");
   const [groceryItems, setGroceryItems] = useState([]);
-
   const handleChangeInputValue = (e) => {
     setInputValue(e.target.value);
   };
@@ -45,11 +44,25 @@ function App() {
     setGroceryItems([...groceryItems].filter((item) => item.name !== name));
   };
 
+  const handleUpdateCompleteStatus = (status, index) => {
+    const updatedGroceryList = [...groceryItems];
+    updatedGroceryList[index].completed = status;
+    setGroceryItems(updatedGroceryList);
+  };
+
   const renderGroceryList = () => {
-    return groceryItems.map((item) => (
+    return groceryItems.map((item, index) => (
       <li key={item.name}>
         <div className="container">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            onChange={(e) => {
+              console.log(e.target.checked);
+              handleUpdateCompleteStatus(true, index);
+            }}
+            value={item.completed}
+            checked={item.completed}
+          />
           <p>
             {item.name} {item.quantity > 1 && <span>x{item.quantity}</span>}
           </p>
