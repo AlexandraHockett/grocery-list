@@ -19,14 +19,23 @@ function App() {
   const handdleAddGroceryItem = (e) => {
     if (e.key === "Enter") {
       if (inputValue) {
-        setGroceryItems([
-          ...groceryItems,
-          {
-            quantity: 1,
+        const updatedGroceryList = [...groceryItems];
+
+        const itemIndex = updatedGroceryList.findIndex(
+          (item) => item.name === inputValue
+        );
+
+        if (itemIndex === -1) {
+          updatedGroceryList.push({
             name: inputValue,
+            quantity: 1,
             completed: false,
-          },
-        ]);
+          });
+        } else {
+          updatedGroceryList[itemIndex].quantity++;
+        }
+
+        setGroceryItems(updatedGroceryList);
         setInputValue("");
       }
     }
@@ -37,7 +46,9 @@ function App() {
       <li key={item.name}>
         <div className="container">
           <input type="checkbox" />
-          <p>{item.name}</p>
+          <p>
+            {item.name} {item.quantity > 1 && <span>x{item.quantity}</span>}
+          </p>
         </div>
         <div>
           <button className="remove-button">X</button>
