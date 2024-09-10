@@ -41,6 +41,10 @@ function App() {
     }
   };
 
+  const handleRemoveItem = (name) => {
+    setGroceryItems([...groceryItems].filter((item) => item.name !== name));
+  };
+
   const renderGroceryList = () => {
     return groceryItems.map((item) => (
       <li key={item.name}>
@@ -51,7 +55,12 @@ function App() {
           </p>
         </div>
         <div>
-          <button className="remove-button">X</button>
+          <button
+            className="remove-button"
+            onClick={() => handleRemoveItem(item.name)}
+          >
+            X
+          </button>
         </div>
       </li>
     ));
